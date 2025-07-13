@@ -1,0 +1,22 @@
+server:
+  port: 8082
+
+spring:
+  # 开发环境数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/teacher?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456dg
+  # 开发环境下自动执行初始化SQL
+  sql:
+    init:
+      schema-locations:
+      mode: always
+      encoding: UTF-8
+
+# 日志配置
+logging:
+  level:
+    root: info
+    com.example.teacher: debug
+    org.springframework.jdbc.datasource.init: debug 

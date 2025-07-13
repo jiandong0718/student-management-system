@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  # 测试环境数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/teacher?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: test
+    password: test123
+
+# 日志配置
+logging:
+  level:
+    root: info
+    com.example.teacher: info

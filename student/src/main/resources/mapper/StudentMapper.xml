@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.student.mapper.StudentMapper">
+    <!-- 自定义复杂查询可以在此处添加 -->
+    
+    <!-- 查询学生列表带班级信息的示例（如有班级表） -->
+    <!--
+    <select id="selectStudentWithClass" resultType="com.example.student.vo.StudentVO">
+        SELECT 
+            s.id,
+            s.student_no,
+            s.name,
+            s.age,
+            s.gender,
+            s.class_id,
+            s.phone,
+            s.email,
+            s.address,
+            s.create_time,
+            s.update_time,
+            c.name as class_name
+        FROM 
+            t_student s
+        LEFT JOIN 
+            t_class c ON s.class_id = c.id
+        WHERE 
+            s.deleted = 0
+    </select>
+    -->
+</mapper> 

@@ -1,0 +1,181 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /student
+
+spring:
+  application:
+    name: student
+  # 激活配置文件
+  profiles:
+    active: dev
+  # 数据源公共配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # 初始连接数
+      initial-size: 5
+      # 最小连接池数量
+      min-idle: 5
+      # 最大连接池数量
+      max-active: 20
+      # 获取连接等待超时时间
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      max-evictable-idle-time-millis: 900000
+      # 配置检测连接是否有效
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 配置监控统计拦截的filters，stat:监控统计、wall:防御sql注入
+      filters: stat,wall
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 配置DruidStatFilter
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      # 配置DruidStatViewServlet
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        # IP白名单(没有配置或者为空，则允许所有访问)
+        allow: 127.0.0.1
+        # IP黑名单 (存在共同时，deny优先于allow)
+        deny:
+        # 禁用HTML页面上的"Reset All"功能
+        reset-enable: false
+        # 登录名
+        login-username: admin
+        # 登录密码
+        login-password: admin123
+    # 禁用Nacos配置和服务发现
+  cloud:
+    nacos:
+      discovery:
+        enabled: false
+      config:
+        enabled: false
+        import-check:
+          enabled: false
+    autoconfigure:
+      exclude:
+        - com.alibaba.cloud.nacos.NacosDiscoveryAutoConfiguration
+        - com.alibaba.cloud.nacos.discovery.NacosDiscoveryAutoConfiguration
+        - com.alibaba.cloud.nacos.NacosConfigAutoConfiguration
+        - com.alibaba.cloud.nacos.ribbon.RibbonNacosAutoConfiguration
+        
+  # Redis配置
+  data:
+    redis:
+      # Redis数据库索引（默认为0）
+      database: 0
+      # Redis服务器地址
+      host: localhost
+      # Redis服务器连接端口
+      port: 6379
+      # Redis服务器连接密码（默认为空）
+      password: 
+      # 连接超时时间
+      timeout: 5000
+      # Jedis连接池
+      jedis:
+        pool:
+          # 最大连接数（使用负值表示没有限制）
+          max-active: 8
+          # 最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: -1ms
+          # 最大空闲连接
+          max-idle: 8
+          # 最小空闲连接
+          min-idle: 0
+          
+  # Kafka配置
+  kafka:
+    # Kafka服务器地址
+    bootstrap-servers: localhost:9092
+    # 生产者配置
+    producer:
+      # 重试次数
+      retries: 3
+      # 批量发送大小
+      batch-size: 16384
+      # 缓冲区大小
+      buffer-memory: 33554432
+      # 键的序列化方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 值的序列化方式
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      # 所有副本确认后才认为消息发送成功
+      acks: all
+    # 消费者配置
+    consumer:
+      # 消费者组ID
+      group-id: student-service-${spring.profiles.active}-group
+      # 是否自动提交offset
+      enable-auto-commit: false
+      # 键的反序列化方式
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 值的反序列化方式
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      # 信任所有包
+      properties:
+        spring.json.trusted.packages: com.example.*
+    # 监听器配置
+    listener:
+      # 消费者ACK模式：手动提交
+      ack-mode: manual
+      # 并发数
+      concurrency: 3
+
+# MyBatis-Plus配置
+mybatis-plus:
+  # 实体类扫描路径
+  type-aliases-package: com.example.student.entity
+  # Mapper扫描路径
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 开启驼峰命名
+    map-underscore-to-camel-case: true
+    # 开启缓存
+    cache-enabled: false
+    # 打印SQL日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    # 数据库相关配置
+    db-config:
+      # 主键类型，AUTO表示自增
+      id-type: AUTO
+      # 逻辑删除配置
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      # 表名前缀，设置后实体类可以省略前缀
+      table-prefix: t_
+
+xxl:
+  job:
+    enabled: false
+
+# SpringDoc OpenAPI配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  packages-to-scan: com.example.student.controller 
