@@ -13,7 +13,7 @@
 
 ## 📋 项目简介
 
-本项目是一个现代化的教育机构管理系统，采用**多模块Maven项目架构**，基于Spring Boot 3.x和Spring Cloud 2023.x技术栈构建。系统采用领域驱动设计（DDD）思想，实现了学生服务和教师服务的独立部署，为教育机构提供高效、稳定、可扩展的管理解决方案。
+本项目是一个现代化的教育机构管理系统，采用**多模块Maven项目架构**，基于Spring Boot 2.7.18和Spring Cloud 2021.0.8技术栈构建。系统采用领域驱动设计（DDD）思想，实现了学生服务和教师服务的独立部署，为教育机构提供高效、稳定、可扩展的管理解决方案。
 
 ### 🎯 核心特性
 
@@ -36,20 +36,20 @@
 
 | 层次 | 技术 | 版本 | 说明 |
 |------|------|------|------|
-| **后端框架** | Spring Boot | 2.7.x | 核心框架 |
-| **微服务框架** | Spring Cloud | 2021.x | 微服务生态 |
+| **后端框架** | Spring Boot | 2.7.18 | 核心框架 |
+| **微服务框架** | Spring Cloud | 2021.0.8 | 微服务生态 |
 | **服务调用** | OpenFeign | 3.x | 服务间通信 |
-| **数据访问** | MyBatis Plus | 3.5.3.x | ORM框架 |
+| **数据访问** | MyBatis Plus | 3.5.3.1 | ORM框架 |
 | **关系型数据库** | MySQL | 8.0+ | 主数据库 |
 | **分布式缓存** | Redis | 6.0+ | 分布式缓存 |
 | **本地缓存** | Caffeine | 3.x | 高性能本地缓存 |
-| **注册中心** | Nacos | 2021.x | 服务注册与发现 |
-| **配置中心** | Nacos | 2021.x | 分布式配置管理 |
-| **任务调度** | XXL-Job | 2.4.x | 分布式任务调度 |
-| **消息队列** | Kafka | 2.8.x | 消息分发与异步解耦 |
+| **注册中心** | Nacos | 2021.0.5.0 | 服务注册与发现 |
+| **配置中心** | Nacos | 2021.0.5.0 | 分布式配置管理 |
+| **任务调度** | XXL-Job | 2.4.1 | 分布式任务调度 |
+| **消息队列** | Kafka | 2.8.9 | 消息分发与异步解耦 |
 | **安全框架** | Spring Security | 5.x | 认证授权 |
-| **文档工具** | Springdoc OpenAPI | 1.8.x | API文档 |
-| **构建工具** | Maven | 3.8+ | 项目构建 |
+| **文档工具** | Springdoc OpenAPI | 1.8.0 | API文档 |
+| **构建工具** | Maven | 3.6+ | 项目构建 |
 | **Java版本** | JDK | 8 | 运行环境 |
 
 ### 项目架构
@@ -80,7 +80,7 @@
 ### 环境要求
 
 - **JDK 8+**
-- **Maven 3.8+**
+- **Maven 3.6+**
 - **MySQL 8.0+**
 - **Redis 6.0+** (必需)
 - **Kafka 2.8.x** (可选)
@@ -90,8 +90,8 @@
 
 1. **克隆项目**
    ```bash
-   git clone https://github.com/your-username/student-management.git
-   cd student-management
+   git clone https://github.com/jiandong0718/student-management-system.git
+   cd student-management-system
    ```
 
 2. **数据库配置**
@@ -99,19 +99,13 @@
    # 创建数据库
    CREATE DATABASE student CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    CREATE DATABASE teacher CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   
-   # 可选：创建测试和生产环境数据库
-   CREATE DATABASE student_db_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   CREATE DATABASE teacher_db_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   CREATE DATABASE student_db_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   CREATE DATABASE teacher_db_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
    ```
 
 3. **修改配置文件**
    ```bash
    # 修改开发环境配置
-   vim student-service/src/main/resources/application-dev.yml
-   vim teacher-service/src/main/resources/application-dev.yml
+   vim student/src/main/resources/application-dev.yml
+   vim teacher/src/main/resources/application-dev.yml
    
    # 更新数据库密码
    spring:
@@ -130,35 +124,31 @@
 
 5. **编译和运行**
    ```bash
-   # 方式1：使用脚本（推荐）
-   ./build.sh        # 编译项目
-   ./run-services.sh # 启动所有服务
+   # 编译整个项目
+   mvn clean install -DskipTests
    
-   # 方式2：手动编译运行
-   ./mvnw clean install -DskipTests
-   java -jar student-service/target/student-service-1.0.0.jar &
-   java -jar teacher-service/target/teacher-service-1.0.0.jar &
+   # 运行学生服务
+   cd student
+   mvn spring-boot:run
    
-   # 方式3：使用Maven插件
-   cd student-service && ../mvnw spring-boot:run &
-   cd teacher-service && ../mvnw spring-boot:run &
+   # 运行教师服务
+   cd teacher
+   mvn spring-boot:run
    ```
 
 6. **验证服务**
    ```bash
-   # 检查服务状态
-   curl http://localhost:8081/actuator/health
-   curl http://localhost:8082/actuator/health
+   # 检查学生服务
+   curl http://localhost:8081/student/api/students
    
-   # 查看服务信息
-   curl http://localhost:8081/actuator/info
-   curl http://localhost:8082/actuator/info
+   # 检查教师服务
+   curl http://localhost:8082/teacher/api/teachers
    ```
 
 ## 📦 项目结构
 
 ```
-student-management/
+student-management-system/
 ├── pom.xml                           # 父POM聚合器
 ├── common/                           # 通用模块
 │   ├── pom.xml
@@ -257,18 +247,10 @@ student-management/
 ## 🌐 访问地址
 
 ### 开发环境
-- **学生服务**：http://localhost:8081
-- **教师服务**：http://localhost:8082
-- **学生服务API文档**：http://localhost:8081/swagger-ui/index.html
-- **教师服务API文档**：http://localhost:8082/swagger-ui/index.html
-- **学生服务健康检查**：http://localhost:8081/actuator/health
-- **教师服务健康检查**：http://localhost:8082/actuator/health
-
-### 服务监控
-- **学生服务指标**：http://localhost:8081/actuator/metrics
-- **教师服务指标**：http://localhost:8082/actuator/metrics
-- **学生服务信息**：http://localhost:8081/actuator/info
-- **教师服务信息**：http://localhost:8082/actuator/info
+- **学生服务**：http://localhost:8081/student
+- **教师服务**：http://localhost:8082/teacher
+- **学生服务API文档**：http://localhost:8081/student/swagger-ui/index.html
+- **教师服务API文档**：http://localhost:8082/teacher/swagger-ui/index.html
 
 ## 🔮 未来规划
 
@@ -286,106 +268,54 @@ student-management/
 ### 编译命令
 ```bash
 # 编译整个项目
-./mvnw clean install
+mvn clean install
 
 # 编译并跳过测试
-./mvnw clean install -DskipTests
+mvn clean install -DskipTests
 
 # 编译特定模块
-./mvnw clean install -pl student-service -am
-./mvnw clean install -pl teacher-service -am
+mvn clean install -pl student -am
+mvn clean install -pl teacher -am
 ```
 
 ### 运行命令
 ```bash
 # 指定环境运行
-java -jar student/target/student-1.0.0.jar --spring.profiles.active=test
-java -jar teacher/target/teacher-1.0.0.jar --spring.profiles.active=prod
+java -jar student/target/student-0.0.1-SNAPSHOT.jar --spring.profiles.active=test
+java -jar teacher/target/teacher-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
 
 # 使用Maven插件运行
-cd student && ../mvnw spring-boot:run -Dspring-boot.run.profiles=test
-cd teacher && ../mvnw spring-boot:run -Dspring-boot.run.profiles=prod
-
-# 禁用Nacos配置
-java -jar student/target/student-1.0.0.jar --spring.cloud.nacos.discovery.enabled=false --spring.cloud.nacos.config.enabled=false
+cd student && mvn spring-boot:run -Dspring-boot.run.profiles=test
+cd teacher && mvn spring-boot:run -Dspring-boot.run.profiles=prod
 ```
-
-### 代码规范
-- **命名约定**：Java驼峰命名规范
-- **包结构**：按照功能模块组织代码
-- **注释规范**：使用JavaDoc标准
-- **配置管理**：环境配置分离
 
 ## 📊 API文档
 
-系统集成了Springdoc OpenAPI 1.8.x，提供完整的API文档：
+系统集成了Springdoc OpenAPI 1.8.0，提供完整的API文档：
 
-- **学生服务API**：http://localhost:8081/swagger-ui/index.html
-- **教师服务API**：http://localhost:8082/swagger-ui/index.html
+- **学生服务API**：http://localhost:8081/student/swagger-ui/index.html
+- **教师服务API**：http://localhost:8082/teacher/swagger-ui/index.html
 - **OpenAPI JSON**：
-    - 学生服务：http://localhost:8081/v3/api-docs
-    - 教师服务：http://localhost:8082/v3/api-docs
+    - 学生服务：http://localhost:8081/student/api-docs
+    - 教师服务：http://localhost:8082/teacher/api-docs
 
-## 🧪 测试
+## 🔍 已识别的问题
 
-```bash
-# 运行所有测试
-./mvnw test
-
-# 运行特定模块测试
-./mvnw test -pl student-service
-./mvnw test -pl teacher-service
-
-# 跳过测试编译
-./mvnw clean install -DskipTests
-```
-
-## 🚀 部署
-
-### 生产环境部署
-```bash
-# 1. 编译生产版本
-./mvnw clean package -Pprod
-
-# 2. 设置环境变量
-export DB_USERNAME=prod_user
-export DB_PASSWORD=prod_password
-export REDIS_HOST=prod-redis
-export REDIS_PASSWORD=prod_redis_password
-export KAFKA_SERVERS=prod-kafka:9092
-
-# 3. 启动服务
-java -jar student/target/student-1.0.0.jar --spring.profiles.active=prod --spring.cloud.nacos.discovery.enabled=false --spring.cloud.nacos.config.enabled=false
-java -jar teacher/target/teacher-1.0.0.jar --spring.profiles.active=prod --spring.cloud.nacos.discovery.enabled=false --spring.cloud.nacos.config.enabled=false
-```
-
-### Docker部署 (可选)
-```bash
-# 构建镜像
-docker build -t student-service:1.0.0 student-service/
-docker build -t teacher-service:1.0.0 teacher-service/
-
-# 运行容器
-docker run -p 8081:8081 -e SPRING_PROFILES_ACTIVE=prod student-service:1.0.0
-docker run -p 8082:8082 -e SPRING_PROFILES_ACTIVE=prod teacher-service:1.0.0
-```
-
-## 🤝 贡献指南
-
-1. Fork项目
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送分支 (`git push origin feature/AmazingFeature`)
-5. 创建Pull Request
+1. StudentServiceImpl中的方法实现有缺陷，已修复
+2. 依赖版本存在不一致问题（Spring Boot 2.x vs Spring Boot 3.x组件）
+3. Teacher实体类表名和表前缀配置不一致
+4. 缺少事务管理注解，已添加
+5. 数据库安全配置不足（Druid弱密码、Redis无密码配置）
+6. 接口设计未使用DTO模式，直接暴露实体类
 
 ## 📄 许可证
 
-本项目采用MIT许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+本项目采用MIT许可证。
 
 ## 📞 联系我们
 
-- **项目主页**：https://github.com/jiandong0718/student-management
-- **问题反馈**：https://github.com/jiandong0718/student-management/issues
+- **项目主页**：https://github.com/jiandong0718/student-management-system
+- **问题反馈**：https://github.com/jiandong0718/student-management-system/issues
 - **邮箱**：jiandong.yh@gmail.com
 
 ---
