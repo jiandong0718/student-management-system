@@ -1,31 +1,14 @@
 package com.example.teacher.config;
 
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import com.example.common.config.MyBatisPlusConfig;
 
 /**
- * MyBatis Plus配置类
+ * 导入通用MyBatis-Plus配置
  */
 @Configuration
+@Import(com.example.common.config.MyBatisPlusConfig.class)
 public class MybatisPlusConfig {
-
-    /**
-     * 配置MyBatis Plus插件
-     */
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        
-        // 添加分页插件
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
-        
-        // 添加防全表更新与删除插件
-        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
-        
-        return interceptor;
-    }
+    // 通过Import导入通用配置，可以在这里添加Teacher模块特有的MyBatis-Plus配置
 } 

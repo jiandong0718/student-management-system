@@ -1,25 +1,13 @@
 package com.example.student.config;
 
-import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
- * MyBatis-Plus配置类
+ * 导入通用MyBatis-Plus配置
  */
 @Configuration
+@Import(com.example.common.config.MyBatisPlusConfig.class)
 public class MybatisPlusConfig {
-
-    /**
-     * 配置分页插件
-     */
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // 添加分页插件
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
-        return interceptor;
-    }
+    // 通过Import导入通用配置，可以在这里添加Student模块特有的MyBatis-Plus配置
 } 
