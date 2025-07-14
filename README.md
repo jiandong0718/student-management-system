@@ -90,7 +90,7 @@
 
 1. **克隆项目**
    ```bash
-   git clone https://github.com/your-username/student-management.git
+   git clone https://github.com/your-username/student-management-system.git
    cd student-management
    ```
 
@@ -136,8 +136,8 @@
    
    # 方式2：手动编译运行
    ./mvnw clean install -DskipTests
-   java -jar student-service/target/student-service-1.0.0.jar &
-   java -jar teacher-service/target/teacher-service-1.0.0.jar &
+   java -jar student/target/student-1.0.0.jar &
+   java -jar teacher/target/teacher-1.0.0.jar &
    
    # 方式3：使用Maven插件
    cd student-service && ../mvnw spring-boot:run &
@@ -333,8 +333,8 @@ java -jar student/target/student-1.0.0.jar --spring.cloud.nacos.discovery.enable
 ./mvnw test
 
 # 运行特定模块测试
-./mvnw test -pl student-service
-./mvnw test -pl teacher-service
+./mvnw test -pl student
+./mvnw test -pl teacher
 
 # 跳过测试编译
 ./mvnw clean install -DskipTests
@@ -362,12 +362,12 @@ java -jar teacher/target/teacher-1.0.0.jar --spring.profiles.active=prod --sprin
 ### Docker部署 (可选)
 ```bash
 # 构建镜像
-docker build -t student-service:1.0.0 student-service/
-docker build -t teacher-service:1.0.0 teacher-service/
+docker build -t student-service:1.0.0 student/
+docker build -t teacher-service:1.0.0 teacher/
 
 # 运行容器
-docker run -p 8081:8081 -e SPRING_PROFILES_ACTIVE=prod student-service:1.0.0
-docker run -p 8082:8082 -e SPRING_PROFILES_ACTIVE=prod teacher-service:1.0.0
+docker run -p 8081:8081 -e SPRING_PROFILES_ACTIVE=prod student:1.0.0
+docker run -p 8082:8082 -e SPRING_PROFILES_ACTIVE=prod teacher:1.0.0
 ```
 
 ## 🤝 贡献指南
@@ -384,8 +384,8 @@ docker run -p 8082:8082 -e SPRING_PROFILES_ACTIVE=prod teacher-service:1.0.0
 
 ## 📞 联系我们
 
-- **项目主页**：https://github.com/jiandong0718/student-management
-- **问题反馈**：https://github.com/jiandong0718/student-management/issues
+- **项目主页**：https://github.com/jiandong0718/student-management-system
+- **问题反馈**：https://github.com/jiandong0718/student-management-system/issues
 - **邮箱**：jiandong.yh@gmail.com
 
 ---
